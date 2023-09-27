@@ -4,7 +4,7 @@ import {
   PORT,
   PROXYS
 } from './config.js'
-import {getBody} from './util'
+import {getBody} from './util.js'
 
 let times = 0
 const COUNT = PROXYS.length
