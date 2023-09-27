@@ -2,7 +2,7 @@ import http from 'http'
 import httpProxy from 'http-proxy'
 
 
-const PORT = 3000
+const PORT = process.env.PORT|| 3000
 // 创建代理服务器实例
 const proxy = httpProxy.createProxyServer();
 // 创建 HTTP 服务器
