@@ -5,6 +5,8 @@ import {
   PROXYS
 } from './config.js'
 import {getBody} from './util.js'
+import {exec} from 'child_process'
+import path from 'path'
 
 let times = 0
 const COUNT = PROXYS.length
@@ -15,10 +17,8 @@ const server = http.createServer(async function (req, res) {
   if(Date.now() - lastRequestTime < 1000){
     proxy = PROXYS[times++ % COUNT]
   }
-  req.pipe()
   lastRequestTime = Date.now()
   const url = proxy + req.url
-  console.log(`| ${resp.status} | ${times} | ${resp.statusText} | ${url} `);
   const body = await getBody(req)
   const resp = await fetch(url,{
     method:'post',
@@ -30,8 +30,13 @@ const server = http.createServer(async function (req, res) {
   res.setHeader('Content-Type', 'application/json');
   res.statusCode = 200
   res.end(await resp.text())
+  console.log(`| ${resp.status} | ${resp.statusText} | ${url} `);
 })
 
+exec(path.resolve(process.cwd(),'./exe/deeplx.exe'),(err,stdout,stderr)=>{
+  if(err) throw err
+  console.log(stdout);
+})
 
 server.listen(PORT,()=>{
   console.log("listening on port " + PORT)
