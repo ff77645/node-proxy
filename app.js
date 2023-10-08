@@ -25,7 +25,6 @@ const server = http.createServer(async (req, res) => {
   if(Date.now() - lastRequestTime < 1000){
     target = PROXYS[times++ % COUNT]
   }
-  console.log('req.url',req.url,target);
   lastRequestTime = Date.now()
   proxy.web(req, res, {
     target,
