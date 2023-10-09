@@ -20,12 +20,24 @@ exec(path.resolve('./main'),(err,stdout,stderr)=>{
   console.log(stdout);
 })
 
+proxy.on('error',(err,req,res)=>{
+  console.log(`error: ${err.toString()} |  ${req.target}`);
+  proxy.web(req, res, {
+    target:PROXYS[0],
+    changeOrigin: true,
+  });
+})
+
+proxy.on('proxyRes',(proxyRes,req,res)=>{
+  console.log(`${new Date().toLocaleString()} | ${proxyRes.statusCode} | ${req.target}`);
+})
+
 const server = http.createServer(async (req, res) => {
   let target = PROXYS[0]
-  if(Date.now() - lastRequestTime < 1000){
-    target = PROXYS[times++ % COUNT]
+  if(times++ % 4 === 3){
+    target = PROXYS[1]
   }
-  lastRequestTime = Date.now()
+  req.target = target
   proxy.web(req, res, {
     target,
     changeOrigin: true,
