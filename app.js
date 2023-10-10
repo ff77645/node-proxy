@@ -32,7 +32,7 @@ proxy.on('proxyRes',(proxyRes,req,res)=>{
   console.log(`${new Date().toLocaleString()} | ${proxyRes.statusCode} | ${req.target}`);
 })
 
-const server = http.createServer(async (req, res) => {
+const server = http.createServer((req, res) => {
   let target = PROXYS[0]
   if(times++ % 4 === 3){
     target = PROXYS[1]
