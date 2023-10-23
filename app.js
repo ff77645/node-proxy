@@ -34,7 +34,7 @@ proxy.on('proxyRes',(proxyRes,req,res)=>{
 
 const server = http.createServer((req, res) => {
   let target = PROXYS[0]
-  if(times++ % 4 === 3){
+  if(times++ % 3 === 2){
     target = PROXYS[1]
   }
   req.target = target
